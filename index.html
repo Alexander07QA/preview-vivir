@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VIVIR</title>
+  <meta name="description" content="Estamos preparando algo para ti.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#3F4A20">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Fuente del sitio (Fredoka, licencia OFL) */
+    @font-face { font-family: "Fredoka"; font-weight: 500 700; font-display: swap; src: url("assets/fonts/fredoka-latin.woff2") format("woff2"); }
+
+    :root {
+      --amarillo: #F2C230;
+      --oliva-oscuro: #3F4A20;
+      --rosado: #F4A7B9;
+      --crema: #FFF8EC;
+      --font-title: "Fredoka", system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--font-title);
+      color: var(--crema);
+      background: var(--oliva-oscuro);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ---------- Fondo: foto en transparencia ---------- */
+    .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+    .bg img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center 18%;
+      opacity: .26;
+      filter: saturate(.75);
+      transform: scale(1.06);
+      animation: respirar 14s ease-in-out infinite alternate;
+    }
+    .bg::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 55%, rgba(63, 74, 32, .35) 0%, rgba(63, 74, 32, .85) 70%),
+        linear-gradient(180deg, rgba(63, 74, 32, .55) 0%, rgba(63, 74, 32, .2) 40%, rgba(47, 56, 22, .92) 100%);
+    }
+    @media (min-width: 900px) {
+      .bg img { object-position: 70% 20%; }
+    }
+    @keyframes respirar { from { transform: scale(1.06) translateY(0); } to { transform: scale(1.16) translateY(-1.5%); } }
+
+    /* ---------- Destellos que suben ---------- */
+    .chispas { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .chispa {
+      position: absolute; bottom: -20px; border-radius: 50%;
+      opacity: 0;
+      animation: subir linear infinite;
+    }
+    @keyframes subir {
+      0%   { transform: translate(0, 0) scale(.6); opacity: 0; }
+      15%  { opacity: .9; }
+      50%  { transform: translate(var(--x, 20px), -55vh) scale(1); }
+      85%  { opacity: .6; }
+      100% { transform: translate(calc(var(--x, 20px) * -1), -110vh) scale(.5); opacity: 0; }
+    }
+
+    /* ---------- Contenido ---------- */
+    .wrap {
+      position: relative; z-index: 1;
+      min-height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 32px 20px;
+      text-align: center;
+    }
+    .entra { opacity: 0; transform: translateY(18px); animation: entrar .9s cubic-bezier(.2, .7, .2, 1) forwards; }
+    .entra:nth-child(2) { animation-delay: .25s; }
+    .entra:nth-child(3) { animation-delay: .5s; }
+    .entra:nth-child(4) { animation-delay: .75s; }
+    @keyframes entrar { to { opacity: 1; transform: none; } }
+
+    h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: clamp(4rem, 20vw, 9rem); line-height: 1; letter-spacing: .12em;
+      margin-right: -.12em; /* compensa el espaciado de la última letra para centrar */
+      color: var(--amarillo);
+    }
+    h1 span {
+      display: inline-block;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, .25);
+      animation: flotar 3.2s ease-in-out infinite;
+    }
+    h1 span:nth-child(2) { animation-delay: .2s; }
+    h1 span:nth-child(3) { animation-delay: .4s; }
+    h1 span:nth-child(4) { animation-delay: .6s; }
+    h1 span:nth-child(5) { animation-delay: .8s; }
+    @keyframes flotar {
+      0%, 100% { transform: translateY(0); text-shadow: 0 4px 24px rgba(0, 0, 0, .25); }
+      50%      { transform: translateY(-8px); text-shadow: 0 10px 30px rgba(242, 194, 48, .45); }
+    }
+    .by {
+      margin: 10px 0 0;
+      font-weight: 500; font-size: clamp(.95rem, 3.6vw, 1.15rem);
+      letter-spacing: .28em; text-transform: uppercase;
+      color: var(--rosado);
+    }
+    .soon {
+      margin: 28px 0 0;
+      font-weight: 600;
+      font-size: clamp(1.25rem, 5vw, 1.8rem);
+    }
+
+    /* ---------- Barra de progreso ---------- */
+    .loader { width: min(420px, 100%); margin: 52px auto 0; }
+    .bar {
+      position: relative; height: 16px;
+      border-radius: 999px;
+      background: rgba(255, 248, 236, .14);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, .25);
+    }
+    .bar__fill {
+      position: absolute; inset: 0 auto 0 0; width: 0%;
+      border-radius: inherit; overflow: hidden;
+      background: linear-gradient(90deg, var(--rosado), var(--amarillo));
+      box-shadow: 0 0 18px rgba(242, 194, 48, .55);
+    }
+    /* Rayas diagonales en movimiento */
+    .bar__fill::before {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, .22) 0 10px, transparent 10px 20px);
+      background-size: 28px 28px;
+      animation: rayas .7s linear infinite;
+    }
+    @keyframes rayas { to { background-position: 28px 0; } }
+    /* Brillo que recorre la barra */
+    .bar__fill::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .6), transparent);
+      transform: translateX(-100%);
+      animation: brillo 1.6s ease-in-out infinite;
+    }
+    @keyframes brillo { to { transform: translateX(100%); } }
+
+    /* Número que viaja con la punta de la barra */
+    .bar__num {
+      position: absolute; bottom: calc(100% + 12px); left: 0;
+      transform: translateX(-50%);
+      min-width: 58px; padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--amarillo); color: var(--oliva-oscuro);
+      font-weight: 700; font-size: 1rem; line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+    }
+    .bar__num::after {
+      content: ""; position: absolute; top: 100%; left: 50%;
+      border: 6px solid transparent; border-top-color: var(--amarillo);
+      transform: translateX(-50%);
+    }
+    .bar__num.pop { animation: pop .5s ease; }
+    @keyframes pop { 50% { transform: translateX(-50%) scale(1.18); } }
+
+    .estado {
+      margin: 14px 0 0; min-height: 1.4em;
+      font-weight: 500; font-size: .95rem; letter-spacing: .08em;
+      color: rgba(255, 248, 236, .75);
+    }
+    .estado::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: puntos 1.4s steps(4) infinite; }
+    @keyframes puntos { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bg img, .chispa, h1 span, .bar__fill::before, .bar__fill::after, .bar__num.pop, .estado::after { animation: none; }
+      .chispas { display: none; }
+      .entra { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <img src="assets/img/gaby.webp" alt="" width="800" height="1000" decoding="async">
+  </div>
+  <div class="chispas" id="chispas" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <h1 class="entra" aria-label="VIVIR"><span>V</span><span>I</span><span>V</span><span>I</span><span>R</span></h1>
+    <p class="by entra">By Gabriela Vásquez</p>
+    <p class="soon entra">Estamos preparando algo para ti ✨</p>
+    <div class="loader entra">
+      <div class="bar" role="progressbar" aria-label="Cargando" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar">
+        <span class="bar__fill" id="fill"></span>
+        <span class="bar__num" id="num" aria-hidden="true">0%</span>
+      </div>
+      <p class="estado" id="estado" aria-hidden="true">Cargando</p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Destellos amarillos, rosados y crema que suben por la pantalla
+      var colores = ['#F2C230', '#F4A7B9', '#FFF8EC'];
+      var caja = document.getElementById('chispas');
+      for (var i = 0; !reducido && i < 22; i++) {
+        var c = document.createElement('span');
+        var t = 3 + Math.random() * 6;
+        c.className = 'chispa';
+        c.style.left = (Math.random() * 100) + '%';
+        c.style.width = c.style.height = t + 'px';
+        c.style.background = colores[i % colores.length];
+        c.style.boxShadow = '0 0 ' + (t * 3) + 'px ' + colores[i % colores.length];
+        c.style.setProperty('--x', (Math.random() * 80 - 40) + 'px');
+        c.style.animationDuration = (9 + Math.random() * 10) + 's';
+        c.style.animationDelay = (-Math.random() * 18) + 's';
+        caja.appendChild(c);
+      }
+
+      // Barra: avanza a velocidad variable (a ratos rápido, a ratos lento, con pausas cortas),
+      // llega a 100%, se queda un momento y vuelve a empezar.
+      var fill = document.getElementById('fill');
+      var num = document.getElementById('num');
+      var bar = document.getElementById('bar');
+      var estado = document.getElementById('estado');
+      var valor = 0, velocidad = 8, pausa = 0, ultimo = -1, antes = null;
+
+      function nuevaVelocidad() {
+        velocidad = 3 + Math.random() * 14;                 // % por segundo
+        if (Math.random() < .25) pausa = 300 + Math.random() * 700;
+      }
+
+      function pintar() {
+        var v = Math.floor(valor);
+        fill.style.width = valor + '%';
+        num.style.left = Math.min(Math.max(valor, 6), 94) + '%';
+        if (v !== ultimo) {
+          num.textContent = v + '%';
+          bar.setAttribute('aria-valuenow', v);
+          if (v % 10 === 0 && v > 0) { num.classList.remove('pop'); void num.offsetWidth; num.classList.add('pop'); }
+          ultimo = v;
+        }
+      }
+
+      function cuadro(ahora) {
+        var dt = antes === null ? 0 : Math.min(ahora - antes, 100);
+        antes = ahora;
+        if (pausa > 0) {
+          pausa -= dt;
+        } else {
+          valor += velocidad * dt / 1000;
+          if (Math.random() < dt / 900) nuevaVelocidad();
+        }
+        if (valor >= 100) {
+          valor = 100; pintar();
+          estado.textContent = 'Casi listo';
+          setTimeout(function () {
+            valor = 0; ultimo = -1; antes = null;
+            estado.textContent = 'Cargando';
+            nuevaVelocidad();
+            requestAnimationFrame(cuadro);
+          }, 1800);
+          return;
+        }
+        pintar();
+        requestAnimationFrame(cuadro);
+      }
+
+      if (reducido) {
+        valor = 75; pintar();
+      } else {
+        setTimeout(function () { requestAnimationFrame(cuadro); }, 900);
+      }
+    })();
+  </script>
+</body>
+</html>
