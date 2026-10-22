@@ -173,6 +173,22 @@
     .estado::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: puntos 1.4s steps(4) infinite; }
     @keyframes puntos { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
 
+    /* ---------- Botón al consultorio ---------- */
+    .entra:nth-child(5) { animation-delay: 1s; }
+    .cta {
+      display: inline-block; margin: 36px 0 0;
+      padding: 14px 30px;
+      border-radius: 999px;
+      background: var(--amarillo); color: var(--oliva-oscuro);
+      font-weight: 600; font-size: clamp(1rem, 4vw, 1.15rem);
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+      transition: background .25s ease, box-shadow .25s ease, translate .25s ease;
+    }
+    /* "translate" en vez de "transform" para no chocar con la animación de entrada */
+    .cta:hover { background: var(--rosado); box-shadow: 0 10px 28px rgba(244, 167, 185, .45); translate: 0 -2px; }
+    .cta:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+
     @media (prefers-reduced-motion: reduce) {
       .bg img, .chispa, h1 span, .bar__fill::before, .bar__fill::after, .bar__num.pop, .estado::after { animation: none; }
       .chispas { display: none; }
@@ -197,6 +213,7 @@
       </div>
       <p class="estado" id="estado" aria-hidden="true">Cargando</p>
     </div>
+    <a class="cta entra" href="https://soygabrielavasquez.com/consultorio/">Conoce mi consultorio digital</a>
   </main>
 
   <script>
